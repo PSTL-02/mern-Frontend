@@ -1,18 +1,24 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+const baseURL = import.meta.env.VITE_API_BASE_URL 
 
 const WorkoutForm = () => {
-    const [title, setTitle] = useState('')
-    const [load, setLoad] = useState('')
-    const [reps, setReps] = useState('')
-    const [error, setError] = useState(null)
+     // dispatch for useContext
+     const { dispatch } = useWorkoutsContext()
+     // form inputs state variables:
+     const [title, setTitle] = useState('')
+     const [load, setLoad] = useState('')
+     const [reps, setReps] = useState('')
+     // set an error state
+     const [error, setError] = useState(null)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
     
         const workout = {title, load, reps}
         try {
-            const response = await axios.post('http://localhost:4000/api/workouts', workout, {
+            const response = await axios.post(`${baseURL}/api/workouts`, workout, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -22,7 +28,9 @@ const WorkoutForm = () => {
             setLoad('')
             setError(null)
             console.log('new workout added', response.data)
+            dispatch({type: 'CREATE_WORKOUTS', payload: response.data})
         } catch (error) {
+            console.log(error)
             setError(error.message)
         }
     }

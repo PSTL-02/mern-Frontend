@@ -1,17 +1,23 @@
-import {useState, useEffect} from 'react'
+import {useEffect} from 'react'
 import axios from 'axios'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
+
+//import components
 import WorkoutDetails from '../components/WorkoutDetails';
 import WorkoutForm from '../components/WorkoutForm';
 
-const Home = () => {
-    const [workouts, setWorkouts] = useState(null);
+const baseURL = import.meta.env.VITE_API_BASE_URL 
 
+
+const Home = () => {
+    const {workouts,dispatch} = useWorkoutsContext ()
+  
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await axios.get('http://localhost:4000/api/workouts/')
+            const response = await axios.get(`${baseURL}/api/workouts/`)
             console.log(response.data);
             if (response.status === 200) {
-                setWorkouts(response.data)
+              dispatch({type: 'SET_WORKOUTS', payload: response.data})
             }
         }
 
@@ -31,5 +37,7 @@ const Home = () => {
     </div>        
   )
 }
+
+
 
 export default Home

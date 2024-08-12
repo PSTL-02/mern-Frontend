@@ -2,7 +2,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
 
 // Import Pages
-import Home from './pages/Home' 
+import Home from './pages/Home'
 import Navbar from './components/Navbar'
 
 const App =() => {
